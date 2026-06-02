@@ -33,9 +33,9 @@ const projects = [
   },
   {
     featured: false,
-    title: 'BLOC 2026 · Forecasting',
+    title: 'BLOC 2026 · GRIP Shipping Logistics Challenge',
     meta: 'may. 2026 · Hackathon 48h',
-    desc: 'Modelo LightGBM de forecasting de demanda diaria sobre 1.2M de órdenes cold-chain. 19 features, 46 versiones iterativas. RMSLE 1.037 — reducción del 50% vs baseline. Dashboard interactivo en producción desplegado en AWS S3. 3er lugar en el leaderboard final.',
+    desc: 'Modelo LightGBM de forecasting de demanda diaria sobre 1.2M de órdenes cold-chain para el GRIP Shipping Logistics Challenge. 19 features, 46 versiones iterativas. RMSLE 1.037 — reducción del 50% vs baseline. Dashboard interactivo en producción desplegado en AWS S3. 3er lugar en el leaderboard final.',
     tags: ['Python', 'LightGBM', 'AWS SageMaker', 'Pandas', 'React', 'D3.js', 'XGBoost'],
     primaryTags: ['Python', 'LightGBM', 'AWS SageMaker'],
     icon: '📈',
