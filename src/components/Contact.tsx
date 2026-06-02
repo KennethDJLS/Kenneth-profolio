@@ -20,8 +20,8 @@ const contactLinks = [
   {
     icon: '💼',
     label: 'LinkedIn',
-    value: 'linkedin.com/in/kenneth-lascarro',
-    href: 'https://linkedin.com/in/kenneth-lascarro',
+    value: 'linkedin.com/in/kenneth-lascarro-240086412',
+    href: 'https://www.linkedin.com/in/kenneth-lascarro-240086412',
   },
   {
     icon: '📱',
