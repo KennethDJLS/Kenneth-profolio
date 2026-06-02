@@ -1,20 +1,38 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Kenneth Lascarro — Ingeniero Electrónico",
   description:
-    "Portafolio de Kenneth De Jesús Lascarro Santiago, Ingeniero Electrónico especializado en sistemas embebidos, IoT y diseño de circuitos.",
+    "Portafolio de Kenneth De Jesús Lascarro Santiago · Hardware Designer · IoT Engineer · Barranquilla",
+  keywords: [
+    "Ingeniero Electrónico",
+    "Kenneth Lascarro",
+    "Hardware Designer",
+    "IoT",
+    "Sistemas Embebidos",
+    "Barranquilla",
+  ],
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={inter.className}>
+    <html lang="es" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body>{children}</body>
     </html>
   );

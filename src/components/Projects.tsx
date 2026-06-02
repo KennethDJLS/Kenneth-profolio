@@ -1,69 +1,97 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import styles from './Projects.module.css';
 
 const projects = [
   {
-    title: 'Sistema de Monitoreo IoT',
-    description:
-      'Plataforma de monitoreo en tiempo real para sensores industriales usando ESP32, MQTT y dashboard en Node-RED con alertas automáticas.',
-    tags: ['ESP32', 'MQTT', 'Node-RED', 'IoT'],
-    icon: '📡',
+    featured: true,
+    title: 'UrbanTrack',
+    meta: '2026 · Uninorte',
+    desc: 'Plataforma IoT de rastreo vehicular urbano en tiempo real. OBD-II → ESP32 → AWS IoT Core → dashboard web con SSE. Predicción de tráfico con LightGBM.',
+    tags: ['ESP32', 'OBD-II', 'AWS IoT', 'LightGBM', 'Next.js', 'SSE'],
+    primaryTags: ['ESP32', 'AWS IoT', 'LightGBM'],
+    icon: '🚗',
   },
   {
-    title: 'Control de Motor BLDC',
-    description:
-      'Diseño e implementación de controlador FOC para motores brushless usando STM32 y algoritmos de control vectorial en tiempo real.',
-    tags: ['STM32', 'FOC', 'Altium', 'C'],
+    featured: false,
+    title: 'Aria — Mano Robótica',
+    meta: '2026 · Microcontroladores',
+    desc: 'Prótesis robótica de 5 dedos controlada por EMG. Firmware STM32, servos PWM, filtrado de señal analógica en tiempo real.',
+    tags: ['STM32', 'EMG', 'Servo PWM', 'C', 'SolidWorks'],
+    primaryTags: ['STM32', 'EMG'],
+    icon: '🦾',
+  },
+  {
+    featured: false,
+    title: 'Amperímetro Hall 0–20A',
+    meta: 'ago. 2025 · Electrónica 3',
+    desc: 'Instrumento de medición de corriente DC/AC basado en sensor Hall ACS712. PCB diseñada en KiCad, amplificador de instrumentación, ADC 12-bit.',
+    tags: ['KiCad', 'Op-Amps', 'ACS712', 'ADC', 'Instr. Amps'],
+    primaryTags: ['KiCad', 'Op-Amps'],
     icon: '⚡',
   },
   {
-    title: 'Fuente de Poder Conmutada',
-    description:
-      'Diseño de SMPS flyback de 150W con corrección de factor de potencia (PFC), eficiencia >90% y certificación EMC.',
-    tags: ['Altium', 'SPICE', 'PFC', 'EMC'],
-    icon: '🔋',
+    featured: false,
+    title: 'BLOC 2026 · Forecasting',
+    meta: 'may. 2026 · Hackathon 48h',
+    desc: 'Modelo de predicción de demanda de productos en cadena de suministro usando XGBoost + serie temporal. 1er lugar hackathon BLOC Uninorte.',
+    tags: ['XGBoost', 'Python', 'Pandas', 'Time Series', 'AWS SageMaker'],
+    primaryTags: ['XGBoost', 'AWS SageMaker'],
+    icon: '📈',
   },
   {
-    title: 'Brazo Robótico 3-DOF',
-    description:
-      'Robot articulado controlado por PLC Siemens S7-1200 con visión por computadora para pick-and-place automatizado.',
-    tags: ['PLC', 'Python', 'OpenCV', 'TIA Portal'],
-    icon: '🤖',
-  },
-  {
-    title: 'Red de Sensores LoRaWAN',
-    description:
-      'Infraestructura de medición agrícola con nodos LoRa de bajo consumo, gateway TTN y análisis de datos en la nube.',
-    tags: ['LoRa', 'Arduino', 'TTN', 'Grafana'],
-    icon: '🌿',
+    featured: false,
+    title: 'Sistema NTC',
+    meta: '2025 · Mediciones e Inst.',
+    desc: 'Adquisición y linealización de temperatura con termistor NTC. Circuito de acondicionamiento, calibración Steinhart-Hart, visualización serial.',
+    tags: ['NTC', 'LTSpice', 'Arduino', 'Signal Cond.', 'DAQ'],
+    primaryTags: ['LTSpice', 'Signal Cond.'],
+    icon: '🌡️',
   },
 ];
 
 export default function Projects() {
   const headingRef = useRef<HTMLDivElement>(null);
+  const featuredRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Heading reveal
     const hEl = headingRef.current;
     if (hEl) {
       hEl.style.opacity = '0';
-      hEl.style.transform = 'translateY(30px)';
       const obs = new IntersectionObserver(([e]) => {
         if (e.isIntersecting) {
-          hEl.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+          hEl.style.transition = 'opacity 0.6s ease';
           hEl.style.opacity = '1';
-          hEl.style.transform = 'translateY(0)';
           obs.unobserve(hEl);
         }
-      }, { threshold: 0.1 });
+      }, { threshold: 0.2 });
       obs.observe(hEl);
     }
 
+    // Featured card
+    const fEl = featuredRef.current;
+    if (fEl) {
+      fEl.style.opacity = '0';
+      fEl.style.transform = 'translateY(30px)';
+      const obs = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) {
+          fEl.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+          fEl.style.opacity = '1';
+          fEl.style.transform = 'none';
+          obs.unobserve(fEl);
+        }
+      }, { threshold: 0.1 });
+      obs.observe(fEl);
+    }
+
+    // Stagger grid cards
     const gEl = gridRef.current;
     if (!gEl) return;
     const cards = Array.from(gEl.children) as HTMLElement[];
-    cards.forEach((c) => { c.style.opacity = '0'; c.style.transform = 'translateY(50px)'; });
+    cards.forEach((c) => { c.style.opacity = '0'; c.style.transform = 'translateY(40px)'; });
 
     const obs2 = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
@@ -71,9 +99,9 @@ export default function Projects() {
           const { animate, stagger } = await import('animejs');
           animate(cards, {
             opacity: [0, 1],
-            translateY: [50, 0],
-            delay: stagger(100),
-            duration: 700,
+            translateY: [40, 0],
+            delay: stagger(110),
+            duration: 750,
             ease: 'outExpo',
           });
         })();
@@ -85,76 +113,84 @@ export default function Projects() {
     return () => obs2.disconnect();
   }, []);
 
-  const handleCardHover = async (card: HTMLElement, entering: boolean) => {
+  const springHover = async (el: HTMLElement, enter: boolean) => {
     const { animate } = await import('animejs');
-    animate(card, {
-      translateY: entering ? -8 : 0,
-      scale: entering ? 1.02 : 1,
-      duration: 300,
-      ease: 'spring(1, 80, 10, 0)',
+    animate(el, {
+      translateY: enter ? -5 : 0,
+      duration: 350,
+      ease: 'spring(1, 90, 12, 0)',
     });
   };
 
-  return (
-    <section id="projects" style={{ padding: '6rem 2rem', maxWidth: '1100px', margin: '0 auto' }}>
-      <div ref={headingRef} style={{ marginBottom: '3rem' }}>
-        <span style={{ color: '#4F7EFF', fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
-          — Proyectos
-        </span>
-        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, margin: '0.5rem 0 0', lineHeight: 1.1 }}>
-          Trabajo destacado
-        </h2>
-      </div>
+  const featured = projects[0];
+  const rest = projects.slice(1);
 
-      <div
-        ref={gridRef}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '1.5rem',
-        }}
-      >
-        {projects.map((p) => (
-          <div
-            key={p.title}
-            onMouseEnter={(e) => handleCardHover(e.currentTarget, true)}
-            onMouseLeave={(e) => handleCardHover(e.currentTarget, false)}
-            style={{
-              background: '#162035',
-              border: '1px solid rgba(79,126,255,0.15)',
-              borderRadius: '16px',
-              padding: '2rem',
-              cursor: 'default',
-              willChange: 'transform',
-            }}
-          >
-            <div style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>{p.icon}</div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.75rem', color: '#E8EDF8' }}>
-              {p.title}
-            </h3>
-            <p style={{ color: '#8A9BC0', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '1.5rem' }}>
-              {p.description}
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {p.tags.map((tag) => (
-                <span
-                  key={tag}
-                  style={{
-                    background: 'rgba(79,126,255,0.1)',
-                    border: '1px solid rgba(79,126,255,0.2)',
-                    color: '#7BA3FF',
-                    borderRadius: '6px',
-                    padding: '0.25rem 0.6rem',
-                    fontSize: '0.75rem',
-                    fontWeight: 500,
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
+  return (
+    <section id="projects" className={styles.section}>
+      <div className={styles.inner}>
+        <div ref={headingRef} className={styles.header}>
+          <span className={styles.headerLabel}>02 — Proyectos</span>
+          <div className={styles.headerLine} />
+        </div>
+
+        {/* Featured */}
+        <div
+          ref={featuredRef}
+          className={styles.featured}
+          onMouseEnter={(e) => springHover(e.currentTarget, true)}
+          onMouseLeave={(e) => springHover(e.currentTarget, false)}
+        >
+          <div className={styles.featuredVisual}>{featured.icon}</div>
+          <div className={styles.featuredBody}>
+            <div>
+              <p className={styles.meta}>{featured.meta}</p>
+              <h3 className={styles.featuredTitle}>{featured.title}</h3>
+              <p className={styles.desc}>{featured.desc}</p>
+            </div>
+            <div>
+              <div className={styles.tags}>
+                {featured.tags.map((t) => (
+                  <span
+                    key={t}
+                    className={featured.primaryTags.includes(t) ? styles.tagRed : styles.tagGray}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <span className={styles.arrow}>↗</span>
             </div>
           </div>
-        ))}
+        </div>
+
+        {/* 2-col grid */}
+        <div ref={gridRef} className={styles.grid}>
+          {rest.map((p) => (
+            <div
+              key={p.title}
+              className={styles.card}
+              onMouseEnter={(e) => springHover(e.currentTarget, true)}
+              onMouseLeave={(e) => springHover(e.currentTarget, false)}
+            >
+              <p className={styles.meta}>{p.meta}</p>
+              <h3 className={styles.cardTitle}>
+                {p.icon} {p.title}
+              </h3>
+              <p className={styles.desc}>{p.desc}</p>
+              <div className={styles.tags}>
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className={p.primaryTags.includes(t) ? styles.tagRed : styles.tagGray}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <span className={styles.arrow}>↗</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,74 +1,89 @@
 'use client';
 
-import { useScrollReveal } from './useScrollReveal';
+import Image from 'next/image';
+import { useScrollReveal } from './hooks/useScrollReveal';
+import styles from './About.module.css';
 
-const stats = [
-  { value: '5+', label: 'Años de estudio' },
-  { value: '10+', label: 'Proyectos completados' },
-  { value: '3+', label: 'Áreas de especialización' },
+const infoCards = [
+  { icon: '📍', label: 'Ubicación', value: 'Barranquilla, Colombia' },
+  { icon: '🎓', label: 'Universidad', value: 'Uninorte' },
+  { icon: '🌐', label: 'Idiomas', value: 'Español · Inglés' },
 ];
 
 export default function About() {
   const headingRef = useScrollReveal<HTMLDivElement>();
-  const textRef = useScrollReveal<HTMLDivElement>();
-  const statsRef = useScrollReveal<HTMLDivElement>();
+  const photoRef = useScrollReveal<HTMLDivElement>({ direction: 'left', delay: 100 });
+  const textRef = useScrollReveal<HTMLDivElement>({ direction: 'right', delay: 200 });
 
   return (
-    <section id="about" style={{ padding: '6rem 2rem', maxWidth: '1000px', margin: '0 auto' }}>
-      <div ref={headingRef} style={{ marginBottom: '3rem' }}>
-        <span style={{ color: '#4F7EFF', fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
-          — Sobre mí
-        </span>
-        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, margin: '0.5rem 0 0', lineHeight: 1.1 }}>
-          Pasión por la electrónica
-          <br />
-          <span style={{ color: '#4F7EFF' }}>y la innovación</span>
-        </h2>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }} className="about-grid">
-        <div ref={textRef}>
-          <p style={{ color: '#8A9BC0', lineHeight: 1.8, fontSize: '1.05rem', marginBottom: '1.5rem' }}>
-            Soy Kenneth De Jesús Lascarro Santiago, Ingeniero Electrónico con sólida
-            formación en diseño de circuitos, sistemas embebidos y automatización
-            industrial. Me apasiona crear soluciones que integren hardware y software
-            de manera eficiente.
-          </p>
-          <p style={{ color: '#8A9BC0', lineHeight: 1.8, fontSize: '1.05rem' }}>
-            Mi enfoque combina rigor técnico con creatividad para resolver problemas
-            complejos, desde el prototipado hasta la implementación final en entornos
-            de producción.
-          </p>
+    <section id="about" className={styles.section}>
+      <div className={styles.inner}>
+        <div ref={headingRef} className={styles.header}>
+          <span className={styles.headerLabel}>
+            04 — Sobre <span className={styles.headerLabelRed}>mí</span>
+          </span>
+          <div className={styles.headerLine} />
         </div>
 
-        <div ref={statsRef} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {stats.map((s) => (
-            <div
-              key={s.label}
-              style={{
-                background: '#162035',
-                border: '1px solid rgba(79,126,255,0.15)',
-                borderRadius: '12px',
-                padding: '1.5rem 2rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1.5rem',
-              }}
-            >
-              <span style={{ fontSize: '2.5rem', fontWeight: 800, color: '#4F7EFF', minWidth: '80px' }}>
-                {s.value}
-              </span>
-              <span style={{ color: '#8A9BC0', fontSize: '0.95rem' }}>{s.label}</span>
+        <div className={styles.grid}>
+          {/* Photo */}
+          <div ref={photoRef} className={styles.photoWrap}>
+            <div className={styles.spinRing} aria-hidden />
+            <div className={styles.photoInner}>
+              <Image
+                src="/foto.jpg"
+                alt="Kenneth Lascarro"
+                width={220}
+                height={220}
+                className={styles.photo}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = 'none';
+                  const fb = e.currentTarget.nextSibling as HTMLElement;
+                  if (fb) fb.style.display = 'flex';
+                }}
+              />
+              <span className={styles.photoFallback} style={{ display: 'none' }}>👤</span>
             </div>
-          ))}
+          </div>
+
+          {/* Text */}
+          <div ref={textRef} className={styles.textSide}>
+            <h2 className={styles.tagline}>
+              El mundo real habla en{' '}
+              <span className={styles.taglineRed}>analógico</span>.{' '}
+              Yo traduzco.
+            </h2>
+
+            <p className={styles.bio}>
+              Soy Kenneth De Jesús Lascarro Santiago, estudiante de Ingeniería Electrónica en
+              Uninorte (Barranquilla). Me especializo en el puente entre hardware y software —
+              desde diseñar circuitos analógicos y PCBs hasta implementar sistemas IoT completos
+              que corren en la nube.
+            </p>
+            <p className={styles.bio}>
+              Mi interés va desde sensores y microcontroladores hasta machine learning aplicado
+              a datos del mundo físico. Creo que los mejores productos nacen cuando alguien
+              entiende tanto el transistor como el algoritmo.
+            </p>
+            <p className={styles.bio}>
+              Fuera del laboratorio me encontrarás en hackathons, contribuyendo a proyectos
+              open-source o aprendiendo sobre VLSI y diseño de chips.
+            </p>
+
+            <div className={styles.infoCards}>
+              {infoCards.map((c) => (
+                <div key={c.label} className={styles.infoCard}>
+                  <span className={styles.infoIcon}>{c.icon}</span>
+                  <div>
+                    <span className={styles.infoLabel}>{c.label}</span>
+                    <span className={styles.infoValue}>{c.value}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-        }
-      `}</style>
     </section>
   );
 }

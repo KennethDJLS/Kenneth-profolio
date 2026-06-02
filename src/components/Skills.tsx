@@ -1,37 +1,43 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import styles from './Skills.module.css';
 
 const categories = [
   {
-    label: 'Diseño de Hardware',
+    full: true,
     icon: '🔌',
-    skills: ['Altium Designer', 'KiCad', 'SPICE', 'PCB Layout', 'Esquemáticos'],
+    title: 'Hardware & Embedded',
+    primary: ['BJT Circuits', 'Op-Amps', 'Instr. Amps', 'Signal Cond.', 'Arduino', 'ESP32', 'PCB Design', 'LTSpice', 'C/C++'],
+    secondary: ['ESP-NOW', 'Multisim', 'SkyWater 130nm', 'SolidWorks', 'AutoCAD', 'I2C/SPI', 'Servo PWM', 'Firmware', 'DAQ'],
   },
   {
-    label: 'Sistemas Embebidos',
+    full: false,
     icon: '💻',
-    skills: ['STM32', 'ESP32', 'Arduino', 'PIC', 'FreeRTOS', 'C/C++'],
+    title: 'Software',
+    primary: ['Python', 'MATLAB', 'JavaScript', 'TypeScript'],
+    secondary: ['Next.js', 'SQL', 'Git', 'LabVIEW'],
   },
   {
-    label: 'Automatización',
-    icon: '⚙️',
-    skills: ['PLC Siemens', 'TIA Portal', 'SCADA', 'Ladder Logic', 'HMI'],
-  },
-  {
-    label: 'IoT & Comunicaciones',
+    full: false,
     icon: '📶',
-    skills: ['MQTT', 'LoRaWAN', 'Modbus', 'I2C', 'SPI', 'UART', 'Wi-Fi'],
+    title: 'IoT',
+    primary: ['MQTT/TLS', 'Wi-Fi/BLE', 'OBD-II'],
+    secondary: ['LTE/4G', 'UDP/TCP', 'SSE'],
   },
   {
-    label: 'Software & Herramientas',
-    icon: '🛠️',
-    skills: ['Python', 'MATLAB', 'Node-RED', 'Git', 'Linux', 'Docker'],
+    full: false,
+    icon: '☁️',
+    title: 'Cloud',
+    primary: ['AWS IoT Core', 'AWS Lambda', 'DynamoDB'],
+    secondary: ['AWS EC2', 'AWS CDK', 'SageMaker', 'S3'],
   },
   {
-    label: 'Instrumentación',
-    icon: '📊',
-    skills: ['Osciloscopio', 'Analizador Lógico', 'Multímetro', 'LCR Meter'],
+    full: false,
+    icon: '🤖',
+    title: 'AI / Data',
+    primary: ['LightGBM', 'XGBoost', 'OpenCV'],
+    secondary: ['Computer Vision', 'NumPy', 'Pandas'],
   },
 ];
 
@@ -43,107 +49,82 @@ export default function Skills() {
     const hEl = headingRef.current;
     if (hEl) {
       hEl.style.opacity = '0';
-      hEl.style.transform = 'translateY(30px)';
       const obs = new IntersectionObserver(([e]) => {
         if (e.isIntersecting) {
-          hEl.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+          hEl.style.transition = 'opacity 0.6s ease';
           hEl.style.opacity = '1';
-          hEl.style.transform = 'translateY(0)';
           obs.unobserve(hEl);
         }
-      }, { threshold: 0.1 });
+      }, { threshold: 0.2 });
       obs.observe(hEl);
     }
 
     const gEl = gridRef.current;
     if (!gEl) return;
     const cards = Array.from(gEl.children) as HTMLElement[];
-    cards.forEach((c) => { c.style.opacity = '0'; c.style.transform = 'translateY(40px)'; });
+    cards.forEach((c) => { c.style.opacity = '0'; c.style.transform = 'translateY(35px)'; });
 
     const obs2 = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
         (async () => {
           const { animate, stagger } = await import('animejs');
-          animate(cards, {
+
+          // Stagger cards
+          await animate(cards, {
             opacity: [0, 1],
-            translateY: [40, 0],
-            delay: stagger(80),
-            duration: 600,
+            translateY: [35, 0],
+            delay: stagger(90),
+            duration: 650,
             ease: 'outExpo',
-            onComplete: () => {
-              const allPills = gEl.querySelectorAll('.skill-pill');
-              animate(allPills, {
-                opacity: [0, 1],
-                scale: [0.7, 1],
-                delay: stagger(25),
-                duration: 400,
-                ease: 'outBack',
-              });
-            },
+          }).then(() => {});
+
+          // Stagger pills
+          const pills = gEl.querySelectorAll('[data-pill]');
+          animate(pills, {
+            opacity: [0, 1],
+            scale: [0.8, 1],
+            delay: stagger(18),
+            duration: 300,
+            ease: 'outBack',
           });
         })();
         obs2.unobserve(gEl);
       }
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08 });
     obs2.observe(gEl);
 
     return () => obs2.disconnect();
   }, []);
 
   return (
-    <section id="skills" style={{ padding: '6rem 2rem', maxWidth: '1100px', margin: '0 auto' }}>
-      <div ref={headingRef} style={{ marginBottom: '3rem' }}>
-        <span style={{ color: '#4F7EFF', fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
-          — Habilidades técnicas
-        </span>
-        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, margin: '0.5rem 0 0', lineHeight: 1.1 }}>
-          Stack &amp; herramientas
-        </h2>
-      </div>
+    <section id="skills" className={styles.section}>
+      <div className={styles.inner}>
+        <div ref={headingRef} className={styles.header}>
+          <span className={styles.headerLabel}>03 — Habilidades</span>
+          <div className={styles.headerLine} />
+        </div>
 
-      <div
-        ref={gridRef}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '1.5rem',
-        }}
-      >
-        {categories.map((cat) => (
-          <div
-            key={cat.label}
-            style={{
-              background: '#162035',
-              border: '1px solid rgba(79,126,255,0.12)',
-              borderRadius: '16px',
-              padding: '1.75rem',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-              <span style={{ fontSize: '1.5rem' }}>{cat.icon}</span>
-              <h3 style={{ fontWeight: 700, fontSize: '0.95rem', color: '#E8EDF8', margin: 0 }}>{cat.label}</h3>
+        <div ref={gridRef} className={styles.grid}>
+          {categories.map((cat) => (
+            <div
+              key={cat.title}
+              className={`${styles.card} ${cat.full ? styles.cardFull : ''}`}
+            >
+              <div className={styles.cardHeader}>
+                <span className={styles.cardIcon}>{cat.icon}</span>
+                <span className={styles.cardTitle}>{cat.title}</span>
+              </div>
+              <div className={styles.pills}>
+                {cat.primary.map((s) => (
+                  <span key={s} className={styles.pillRed} data-pill style={{ opacity: 0 }}>{s}</span>
+                ))}
+                {cat.secondary.map((s) => (
+                  <span key={s} className={styles.pillGray} data-pill style={{ opacity: 0 }}>{s}</span>
+                ))}
+              </div>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {cat.skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="skill-pill"
-                  style={{
-                    background: 'rgba(79,126,255,0.08)',
-                    border: '1px solid rgba(79,126,255,0.18)',
-                    color: '#8A9BC0',
-                    borderRadius: '6px',
-                    padding: '0.3rem 0.65rem',
-                    fontSize: '0.8rem',
-                    opacity: 0,
-                  }}
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,17 +1,23 @@
+import styles from './Footer.module.css';
+
 export default function Footer() {
   return (
-    <footer
-      style={{
-        borderTop: '1px solid rgba(79,126,255,0.1)',
-        padding: '2rem',
-        textAlign: 'center',
-        color: '#8A9BC0',
-        fontSize: '0.85rem',
-      }}
-    >
-      <p style={{ margin: 0 }}>
-        © {new Date().getFullYear()} Kenneth De Jesús Lascarro Santiago — Ingeniero Electrónico
+    <footer className={styles.footer}>
+      <p className={styles.copy}>
+        © {new Date().getFullYear()} Kenneth Lascarro
+        <span className={styles.copyRed}> ·</span> Barranquilla, Colombia
       </p>
+      <div className={styles.socials}>
+        <a href="https://github.com/KennethDJLS" target="_blank" rel="noopener noreferrer" className={styles.social}>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/kenneth-lascarro" target="_blank" rel="noopener noreferrer" className={styles.social}>
+          LinkedIn
+        </a>
+        <a href="mailto:kennethlascarro@gmail.com" className={styles.social}>
+          Email
+        </a>
+      </div>
     </footer>
   );
 }
