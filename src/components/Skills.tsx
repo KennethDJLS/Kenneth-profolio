@@ -100,7 +100,7 @@ export default function Skills() {
     <section id="skills" className={styles.section}>
       <div className={styles.inner}>
         <div ref={headingRef} className={styles.header}>
-          <span className={styles.headerLabel}>03 — Habilidades</span>
+          <span className={styles.headerLabel}>04 — Habilidades</span>
           <div className={styles.headerLine} />
         </div>
 

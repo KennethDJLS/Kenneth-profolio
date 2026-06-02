@@ -20,7 +20,7 @@ export default function About() {
       <div className={styles.inner}>
         <div ref={headingRef} className={styles.header}>
           <span className={styles.headerLabel}>
-            04 — Sobre <span className={styles.headerLabelRed}>mí</span>
+            02 — Sobre <span className={styles.headerLabelRed}>mí</span>
           </span>
           <div className={styles.headerLine} />
         </div>

@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import styles from './Navbar.module.css';
 
 const links = [
+  { label: 'Sobre mí', href: '#about' },
   { label: 'Proyectos', href: '#projects' },
   { label: 'Habilidades', href: '#skills' },
-  { label: 'Sobre mí', href: '#about' },
   { label: 'Contacto', href: '#contact' },
 ];
 
@@ -34,7 +34,7 @@ export default function Navbar() {
           </li>
         ))}
         <li>
-          <a href="/cv.pdf" download className={styles.cvBtn}>
+          <a href="/CV_Kenneth_Lascarro.pdf" download className={styles.cvBtn}>
             CV ↓
           </a>
         </li>
@@ -63,7 +63,7 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <a href="/cv.pdf" download className={styles.mobileLink} style={{ color: '#E53E3E' }}>
+          <a href="/CV_Kenneth_Lascarro.pdf" download className={styles.mobileLink} style={{ color: '#E53E3E' }}>
             CV ↓
           </a>
         </div>

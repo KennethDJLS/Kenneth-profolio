@@ -10,7 +10,7 @@ interface Particle {
   r: number;
 }
 
-function initParticles(w: number, h: number, count = 80): Particle[] {
+function initParticles(w: number, h: number, count = 140): Particle[] {
   return Array.from({ length: count }, () => ({
     x: Math.random() * w,
     y: Math.random() * h,
@@ -27,7 +27,7 @@ function drawParticles(
   h: number
 ) {
   ctx.clearRect(0, 0, w, h);
-  const MAX_DIST = 90;
+  const MAX_DIST = 120;
 
   for (let i = 0; i < particles.length; i++) {
     const p = particles[i];
@@ -36,25 +36,26 @@ function drawParticles(
     if (p.x < 0 || p.x > w) p.vx *= -1;
     if (p.y < 0 || p.y > h) p.vy *= -1;
 
-    // dot
+    // dot — more opaque fill
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(229,62,62,0.6)';
+    ctx.fillStyle = 'rgba(229,62,62,0.75)';
     ctx.fill();
 
-    // connections
+    // connections — brighter lines
     for (let j = i + 1; j < particles.length; j++) {
       const q = particles[j];
       const dx = p.x - q.x;
       const dy = p.y - q.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < MAX_DIST) {
-        const alpha = (1 - dist / MAX_DIST) * 0.25;
+        // alpha ranges from 0.25 (far) to 0.60 (close)
+        const alpha = 0.25 + (1 - dist / MAX_DIST) * 0.35;
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(q.x, q.y);
         ctx.strokeStyle = `rgba(229,62,62,${alpha})`;
-        ctx.lineWidth = 0.7;
+        ctx.lineWidth = 0.8;
         ctx.stroke();
       }
     }

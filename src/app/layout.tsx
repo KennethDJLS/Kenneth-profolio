@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Kenneth Lascarro — Ingeniero Electrónico",
   description:
-    "Portafolio de Kenneth De Jesús Lascarro Santiago · Hardware Designer · IoT Engineer · Barranquilla",
+    "Portafolio de Kenneth De Jesús Lascarro Santiago · Hardware Designer · IoT Engineer · Electronic Engineer",
   keywords: [
     "Ingeniero Electrónico",
     "Kenneth Lascarro",
@@ -26,6 +26,13 @@ export const metadata: Metadata = {
     "Sistemas Embebidos",
     "Barranquilla",
   ],
+  openGraph: {
+    title: "Kenneth Lascarro — Ingeniero Electrónico",
+    description: "The real world speaks in analog. I translate.",
+    url: "https://kennethdjls.vercel.app",
+    siteName: "Kenneth Lascarro",
+    images: [],
+  },
 };
 
 export default function RootLayout({
