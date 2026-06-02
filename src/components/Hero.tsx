@@ -65,6 +65,7 @@ function drawParticles(
 const WORDS = ['Hardware Designer', 'IoT Engineer', 'Electronic Engineer'];
 
 export default function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const badgeRef = useRef<HTMLSpanElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
@@ -78,10 +79,11 @@ export default function Hero() {
   const [wordIdx, setWordIdx] = useState(0);
   const [phase, setPhase] = useState<'typing' | 'pausing' | 'deleting'>('typing');
 
-  /* ── Canvas loop ── */
+  /* ── Canvas loop — observes the hero container, not the canvas ── */
   useEffect(() => {
+    const hero = heroRef.current;
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!hero || !canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -89,13 +91,17 @@ export default function Hero() {
     let raf: number;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      particles = initParticles(canvas.width, canvas.height);
+      // Size canvas to hero container dimensions
+      const w = hero.offsetWidth;
+      const h = hero.offsetHeight;
+      canvas.width = w;
+      canvas.height = h;
+      particles = initParticles(w, h);
     };
 
+    // Observe the hero section, not the canvas element
     const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
+    ro.observe(hero);
     resize();
 
     const loop = () => {
@@ -157,7 +163,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="hero" className={styles.hero}>
+    <section id="hero" ref={heroRef} className={styles.hero}>
       <canvas ref={canvasRef} className={styles.canvas} />
 
       <div className={styles.content}>

@@ -133,21 +133,19 @@ export default function Projects() {
           <div className={styles.headerLine} />
         </div>
 
-        {/* Featured */}
+        {/* Featured — full-width text */}
         <div
           ref={featuredRef}
           className={styles.featured}
           onMouseEnter={(e) => springHover(e.currentTarget, true)}
           onMouseLeave={(e) => springHover(e.currentTarget, false)}
         >
-          <div className={styles.featuredVisual}>{featured.icon}</div>
           <div className={styles.featuredBody}>
+            {/* Left: meta + title + desc */}
             <div>
               <p className={styles.meta}>{featured.meta}</p>
               <h3 className={styles.featuredTitle}>{featured.title}</h3>
-              <p className={styles.desc}>{featured.desc}</p>
-            </div>
-            <div>
+              <p className={styles.desc} style={{ maxWidth: '620px' }}>{featured.desc}</p>
               <div className={styles.tags}>
                 {featured.tags.map((t) => (
                   <span
@@ -158,8 +156,9 @@ export default function Projects() {
                   </span>
                 ))}
               </div>
-              <span className={styles.arrow}>↗</span>
             </div>
+            {/* Right: arrow */}
+            <span className={styles.arrow} style={{ marginTop: 0, alignSelf: 'flex-start' }}>↗</span>
           </div>
         </div>
 
@@ -173,9 +172,7 @@ export default function Projects() {
               onMouseLeave={(e) => springHover(e.currentTarget, false)}
             >
               <p className={styles.meta}>{p.meta}</p>
-              <h3 className={styles.cardTitle}>
-                {p.icon} {p.title}
-              </h3>
+              <h3 className={styles.cardTitle}>{p.title}</h3>
               <p className={styles.desc}>{p.desc}</p>
               <div className={styles.tags}>
                 {p.tags.map((t) => (
