@@ -67,7 +67,7 @@ export default function About() {
             </p>
             <p className={styles.bio}>
               Fuera del laboratorio me encontrarás en hackathons, contribuyendo a proyectos
-              open-source o aprendiendo sobre VLSI y diseño de chips.
+              open-source o aprendiendo sobre microcontroladores y diseño de websites.
             </p>
 
             <div className={styles.infoCards}>
